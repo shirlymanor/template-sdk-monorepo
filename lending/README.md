@@ -119,6 +119,9 @@ run();
 <!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
 
+<details open>
+<summary>Available methods</summary>
+
 ### [companies](docs/sdks/companies/README.md)
 
 * [list](docs/sdks/companies/README.md#list) - List companies
@@ -126,6 +129,9 @@ run();
 * [update](docs/sdks/companies/README.md#update) - Update company
 * [delete](docs/sdks/companies/README.md#delete) - Delete a company
 * [get](docs/sdks/companies/README.md#get) - Get company
+
+
+</details>
 <!-- End Available Resources and Operations [operations] -->
 
 <!-- Start Requirements [requirements] -->
@@ -149,12 +155,11 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [companiesCreate](docs/sdks/companies/README.md#create)
-- [companiesDelete](docs/sdks/companies/README.md#delete)
-- [companiesGet](docs/sdks/companies/README.md#get)
-- [companiesList](docs/sdks/companies/README.md#list)
-- [companiesUpdate](docs/sdks/companies/README.md#update)
-
+- [`companiesCreate`](docs/sdks/companies/README.md#create) - Create company
+- [`companiesDelete`](docs/sdks/companies/README.md#delete) - Delete a company
+- [`companiesGet`](docs/sdks/companies/README.md#get) - Get company
+- [`companiesList`](docs/sdks/companies/README.md#list) - List companies
+- [`companiesUpdate`](docs/sdks/companies/README.md#update) - Update company
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -238,15 +243,24 @@ run();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-All SDK methods return a response object or throw an error. If Error objects are specified in your OpenAPI Spec, the SDK will throw the appropriate Error type.
+All SDK methods return a response object or throw an error. By default, an API error will throw a `errors.SDKError`.
 
-| Error Object                    | Status Code                     | Content Type                    |
-| ------------------------------- | ------------------------------- | ------------------------------- |
-| errors.ErrorMessage             | 400,401,402,403,404,429,500,503 | application/json                |
-| errors.SDKError                 | 4xx-5xx                         | */*                             |
+If a HTTP request fails, an operation my also throw an error from the `models/errors/httpclienterrors.ts` module:
 
-Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted string since validation errors can list many issues and the plain error string may be difficult read when debugging. 
+| HTTP Client Error                                    | Description                                          |
+| ---------------------------------------------------- | ---------------------------------------------------- |
+| RequestAbortedError                                  | HTTP request was aborted by the client               |
+| RequestTimeoutError                                  | HTTP request timed out due to an AbortSignal signal  |
+| ConnectionError                                      | HTTP client was unable to make a request to a server |
+| InvalidRequestError                                  | Any input used to create a request is invalid        |
+| UnexpectedClientError                                | Unrecognised or unexpected error                     |
 
+In addition, when custom error responses are specified for an operation, the SDK may throw their associated Error type. You can refer to respective *Errors* tables in SDK docs for more details on possible error types for each operation. For example, the `list` method may throw the following errors:
+
+| Error Type          | Status Code                            | Content Type     |
+| ------------------- | -------------------------------------- | ---------------- |
+| errors.ErrorMessage | 400, 401, 402, 403, 404, 429, 500, 503 | application/json |
+| errors.SDKError     | 4XX, 5XX                               | \*/\*            |
 
 ```typescript
 import { LendingTs } from "@speakeasy-sdks/lending";
@@ -295,48 +309,16 @@ async function run() {
 run();
 
 ```
+
+Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted string since validation errors can list many issues and the plain error string may be difficult read when debugging.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Select Server by Index
-
-You can override the default server globally by passing a server index to the `serverIdx` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
-
-| # | Server | Variables |
-| - | ------ | --------- |
-| 0 | `https://api.codat.io` | None |
-
-```typescript
-import { LendingTs } from "@speakeasy-sdks/lending";
-
-const lendingTs = new LendingTs({
-  serverIdx: 0,
-  authHeader: "Basic BASE_64_ENCODED(API_KEY)",
-});
-
-async function run() {
-  const result = await lendingTs.companies.list(
-    1,
-    100,
-    "id=e3334455-1aed-4e71-ab43-6bccf12092ee",
-    "-modifiedDate",
-  );
-
-  // Handle the result
-  console.log(result);
-}
-
-run();
-
-```
-
-
 ### Override Server URL Per-Client
 
-The default server can also be overridden globally by passing a URL to the `serverURL` optional parameter when initializing the SDK client instance. For example:
-
+The default server can also be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
 import { LendingTs } from "@speakeasy-sdks/lending";
 
@@ -418,9 +400,9 @@ const sdk = new LendingTs({ httpClient });
 
 This SDK supports the following security scheme globally:
 
-| Name         | Type         | Scheme       |
-| ------------ | ------------ | ------------ |
-| `authHeader` | apiKey       | API key      |
+| Name         | Type   | Scheme  |
+| ------------ | ------ | ------- |
+| `authHeader` | apiKey | API key |
 
 To authenticate with the API the `authHeader` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
