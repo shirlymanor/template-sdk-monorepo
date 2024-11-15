@@ -1,0 +1,41 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: accounting
+  usageSnippets:
+    optionalPropertyRendering: withExample
+  fixes:
+    nameResolutionDec2023: false
+    parameterOrderingFeb2024: false
+    requestResponseComponentNamesFeb2024: false
+  auth:
+    oAuth2ClientCredentialsEnabled: false
+  telemetryEnabled: true
+typescript:
+  version: 0.7.0
+  additionalDependencies:
+    dependencies: {}
+    devDependencies: {}
+    peerDependencies: {}
+  additionalPackageJSON: {}
+  author: Accounting
+  clientServerStatusCodesAsErrors: false
+  description: Access the Accounting API
+  enumFormat: enum
+  flattenGlobalSecurity: true
+  imports:
+    option: openapi
+    paths:
+      callbacks: sdk/models/callbacks
+      errors: sdk/models/errors
+      operations: sdk/models/operations
+      shared: sdk/models/shared
+      webhooks: sdk/models/webhooks
+  inputModelSuffix: input
+  maxMethodParams: 4
+  methodArguments: require-security-and-request
+  moduleFormat: commonjs
+  outputModelSuffix: output
+  packageName: '@speakeasy-sdks/accounting'
+  responseFormat: envelope
+  templateVersion: v2
+  useIndexModules: true
