@@ -17,10 +17,10 @@ let value: CreateAccountResponse = {
   completedOnUtc: "2022-10-23T00:00:00Z",
   dataConnectionKey: "2e9d2c44-f675-40ba-8049-353bfcb5e171",
   dataType: DataType.Invoices,
-  pushOperationKey: "396fea75-96eb-410f-aaa2-352c5955907a",
+  pushOperationKey: "561b9481-9e5a-42b4-9290-d0a4bf39993f",
   requestedOnUtc: "2022-10-23T00:00:00Z",
-  status: PushOperationStatus.TimedOut,
-  statusCode: 102044,
+  status: PushOperationStatus.Success,
+  statusCode: 208,
 };
 ```
 

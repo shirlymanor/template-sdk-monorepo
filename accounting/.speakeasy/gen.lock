@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: ef897581-6141-4d3b-8020-231752f2daa4
 management:
-  docChecksum: dffee27feb3ffdf16d0b73e130a6aa81
+  docChecksum: f8b50a7001cf5436d36e7724d789e057
   docVersion: 3.0.0
-  speakeasyVersion: 1.396.2
-  generationVersion: 2.415.0
-  releaseVersion: 0.7.0
-  configChecksum: abf289594536ee1928a228fa07f22a78
+  speakeasyVersion: 1.440.1
+  generationVersion: 2.460.1
+  releaseVersion: 0.8.1
+  configChecksum: 6beb1567db8b65994feb7198d16f0bf0
   repoURL: https://github.com/speakeasy-sdks/template-sdk-monorepo.git
   repoSubDirectory: accounting
   installationURL: https://gitpkg.now.sh/speakeasy-sdks/template-sdk-monorepo/accounting
@@ -15,13 +15,14 @@ features:
   typescript:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.11
-    core: 3.17.0
+    core: 3.18.5
     decimal: 0.1.2
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
-    envVarSecurityUsage: 0.1.1
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.1.2
     examples: 2.81.4
-    flattening: 2.81.1
+    flattening: 2.82.0
     globalSecurity: 2.82.11
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
@@ -31,8 +32,9 @@ features:
     nullables: 0.1.0
     responseFormat: 0.2.3
     retries: 2.83.0
-    sdkHooks: 0.1.0
+    sdkHooks: 0.2.0
     serverEventsSentinels: 0.1.0
+    tests: 0.7.0
 generatedFiles:
   - .eslintrc.cjs
   - .gitattributes
@@ -705,7 +707,7 @@ examples:
           orderBy: "-modifiedDate"
       responses:
         "200":
-          application/json: {"_links": {"current": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts?page=1&pageSize=2"}, "next": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts?page=2&pageSize=2"}, "self": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts"}}, "pageNumber": 1, "pageSize": 2, "results": [{"currency": "GBP", "currentBalance": -635.55, "description": "Invoices the business has issued but has not yet collected payment on.", "fullyQualifiedCategory": "AcctPay.AcctPay", "fullyQualifiedName": "AcctPay.AcctPay.Accounts Payable", "id": "111", "isBankAccount": false, "modifiedDate": "2023-01-30T14:48:33Z", "name": "Accounts Payable", "nominalCode": "610", "sourceModifiedDate": "2021-08-11T12:51:21", "status": "Active", "type": "Liability", "validDatatypeLinks": []}, {"currency": "USD", "currentBalance": -565, "description": "Invoices the business has issued but has not yet collected payment on.", "fullyQualifiedCategory": "AcctRec.AcctRec", "fullyQualifiedName": "AcctRec.AcctRec.Accounts Receivable", "id": "119", "isBankAccount": false, "modifiedDate": "2023-01-30T14:48:33Z", "name": "Accounts Receivable", "nominalCode": "610", "sourceModifiedDate": "2021-09-08T15:23:31", "status": "Active", "type": "Asset", "validDatatypeLinks": []}], "totalResults": 44}
+          application/json: {"_links": {"current": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts?page=1&pageSize=2"}, "next": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts?page=2&pageSize=2"}, "self": {"href": "/companies/d5074b08-6a34-4b06-a742-236edf5dc4f1/data/accounts"}}, "pageNumber": 1, "pageSize": 2, "results": [{"currency": "USD", "currentBalance": -635.55, "description": "Invoices the business has issued but has not yet collected payment on.", "fullyQualifiedCategory": "AcctPay.AcctPay", "fullyQualifiedName": "AcctPay.AcctPay.Accounts Payable", "id": "111", "isBankAccount": false, "modifiedDate": "2023-01-30T14:48:33Z", "name": "Accounts Payable", "nominalCode": "610", "sourceModifiedDate": "2021-08-11T12:51:21", "status": "Active", "type": "Liability", "validDatatypeLinks": []}, {"currency": "USD", "currentBalance": -565, "description": "Invoices the business has issued but has not yet collected payment on.", "fullyQualifiedCategory": "AcctRec.AcctRec", "fullyQualifiedName": "AcctRec.AcctRec.Accounts Receivable", "id": "119", "isBankAccount": false, "modifiedDate": "2023-01-30T14:48:33Z", "name": "Accounts Receivable", "nominalCode": "610", "sourceModifiedDate": "2021-09-08T15:23:31", "status": "Active", "type": "Asset", "validDatatypeLinks": []}], "totalResults": 44}
     QuickBooks Desktop:
       parameters:
         path:

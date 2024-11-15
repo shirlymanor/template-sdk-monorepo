@@ -3,9 +3,9 @@
  */
 
 import { AccountingCore } from "../core.js";
-import { encodeSimple as encodeSimple$ } from "../lib/encodings.js";
-import * as m$ from "../lib/matchers.js";
-import * as schemas$ from "../lib/schemas.js";
+import { encodeSimple } from "../lib/encodings.js";
+import * as M from "../lib/matchers.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -36,7 +36,7 @@ import { Result } from "../sdk/types/fp.js";
  * Check out our [coverage explorer](https://knowledge.codat.io/supported-features/accounting?view=tab-by-data-type&dataType=chartOfAccounts) for integrations that support creating an account.
  */
 export async function accountsGetCreateModel(
-  client$: AccountingCore,
+  client: AccountingCore,
   companyId: string,
   connectionId: string,
   options?: RequestOptions,
@@ -52,71 +52,57 @@ export async function accountsGetCreateModel(
     | ConnectionError
   >
 > {
-  const input$: operations.GetCreateChartOfAccountsModelRequest = {
+  const input: operations.GetCreateChartOfAccountsModelRequest = {
     companyId: companyId,
     connectionId: connectionId,
   };
 
-  const parsed$ = schemas$.safeParse(
-    input$,
-    (value$) =>
+  const parsed = safeParse(
+    input,
+    (value) =>
       operations.GetCreateChartOfAccountsModelRequest$outboundSchema.parse(
-        value$,
+        value,
       ),
     "Input validation failed",
   );
-  if (!parsed$.ok) {
-    return parsed$;
+  if (!parsed.ok) {
+    return parsed;
   }
-  const payload$ = parsed$.value;
-  const body$ = null;
+  const payload = parsed.value;
+  const body = null;
 
-  const pathParams$ = {
-    companyId: encodeSimple$("companyId", payload$.companyId, {
+  const pathParams = {
+    companyId: encodeSimple("companyId", payload.companyId, {
       explode: false,
       charEncoding: "percent",
     }),
-    connectionId: encodeSimple$("connectionId", payload$.connectionId, {
+    connectionId: encodeSimple("connectionId", payload.connectionId, {
       explode: false,
       charEncoding: "percent",
     }),
   };
 
-  const path$ = pathToFunc(
+  const path = pathToFunc(
     "/companies/{companyId}/connections/{connectionId}/options/chartOfAccounts",
-  )(pathParams$);
+  )(pathParams);
 
-  const headers$ = new Headers({
+  const headers = new Headers({
     Accept: "application/json",
   });
 
-  const authHeader$ = await extractSecurity(client$.options$.authHeader);
-  const security$ = authHeader$ == null ? {} : { authHeader: authHeader$ };
+  const secConfig = await extractSecurity(client._options.authHeader);
+  const securityInput = secConfig == null ? {} : { authHeader: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
+
   const context = {
     operationID: "get-create-chartOfAccounts-model",
     oAuth2Scopes: [],
-    securitySource: client$.options$.authHeader,
-  };
-  const securitySettings$ = resolveGlobalSecurity(security$);
 
-  const requestRes = client$.createRequest$(context, {
-    security: securitySettings$,
-    method: "GET",
-    path: path$,
-    headers: headers$,
-    body: body$,
-    timeoutMs: options?.timeoutMs || client$.options$.timeoutMs || -1,
-  }, options);
-  if (!requestRes.ok) {
-    return requestRes;
-  }
-  const request$ = requestRes.value;
+    resolvedSecurity: requestSecurity,
 
-  const doResult = await client$.do$(request$, {
-    context,
-    errorCodes: [],
+    securitySource: client._options.authHeader,
     retryConfig: options?.retries
-      || client$.options$.retryConfig
+      || client._options.retryConfig
       || {
         strategy: "backoff",
         backoff: {
@@ -126,15 +112,36 @@ export async function accountsGetCreateModel(
           maxElapsedTime: 3600000,
         },
         retryConnectionErrors: true,
-      },
+      }
+      || { strategy: "none" },
     retryCodes: options?.retryCodes || ["408", "429", "5XX"],
+  };
+
+  const requestRes = client._createRequest(context, {
+    security: requestSecurity,
+    method: "GET",
+    path: path,
+    headers: headers,
+    body: body,
+    timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
+  }, options);
+  if (!requestRes.ok) {
+    return requestRes;
+  }
+  const req = requestRes.value;
+
+  const doResult = await client._do(req, {
+    context,
+    errorCodes: [],
+    retryConfig: context.retryConfig,
+    retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
     return doResult;
   }
   const response = doResult.value;
 
-  const responseFields$ = {
+  const responseFields = {
     ContentType: response.headers.get("content-type")
       ?? "application/octet-stream",
     StatusCode: response.status,
@@ -142,7 +149,7 @@ export async function accountsGetCreateModel(
     Headers: {},
   };
 
-  const [result$] = await m$.match<
+  const [result] = await M.match<
     operations.GetCreateChartOfAccountsModelResponse,
     | SDKError
     | SDKValidationError
@@ -152,20 +159,20 @@ export async function accountsGetCreateModel(
     | RequestTimeoutError
     | ConnectionError
   >(
-    m$.json(
+    M.json(
       200,
       operations.GetCreateChartOfAccountsModelResponse$inboundSchema,
       { key: "PushOption" },
     ),
-    m$.json(
+    M.json(
       [401, 402, 403, 404, 429, 500, 503],
       operations.GetCreateChartOfAccountsModelResponse$inboundSchema,
       { key: "ErrorMessage" },
     ),
-  )(response, { extraFields: responseFields$ });
-  if (!result$.ok) {
-    return result$;
+  )(response, { extraFields: responseFields });
+  if (!result.ok) {
+    return result;
   }
 
-  return result$;
+  return result;
 }

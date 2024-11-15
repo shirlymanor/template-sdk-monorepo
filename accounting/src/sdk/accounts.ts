@@ -27,17 +27,17 @@ export class Accounts extends ClientSDK {
    * Check out our [coverage explorer](https://knowledge.codat.io/supported-features/accounting?view=tab-by-data-type&dataType=chartOfAccounts) for integrations that support creating an account.
    */
   async create(
+    accountPrototype: shared.AccountPrototype,
     companyId: string,
     connectionId: string,
-    accountPrototype?: shared.AccountPrototype | undefined,
     timeoutInMinutes?: number | undefined,
     options?: RequestOptions,
   ): Promise<operations.CreateAccountResponse> {
     return unwrapAsync(accountsCreate(
       this,
+      accountPrototype,
       companyId,
       connectionId,
-      accountPrototype,
       timeoutInMinutes,
       options,
     ));

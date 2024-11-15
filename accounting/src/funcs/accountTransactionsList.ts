@@ -3,12 +3,9 @@
  */
 
 import { AccountingCore } from "../core.js";
-import {
-  encodeFormQuery as encodeFormQuery$,
-  encodeSimple as encodeSimple$,
-} from "../lib/encodings.js";
-import * as m$ from "../lib/matchers.js";
-import * as schemas$ from "../lib/schemas.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
+import * as M from "../lib/matchers.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -35,7 +32,7 @@ import { Result } from "../sdk/types/fp.js";
  * Before using this endpoint, you must have [retrieved data for the company](https://docs.codat.io/codat-api#/operations/refresh-company-data).
  */
 export async function accountTransactionsList(
-  client$: AccountingCore,
+  client: AccountingCore,
   request: operations.ListAccountTransactionsRequest,
   options?: RequestOptions,
 ): Promise<
@@ -50,74 +47,57 @@ export async function accountTransactionsList(
     | ConnectionError
   >
 > {
-  const input$ = request;
-
-  const parsed$ = schemas$.safeParse(
-    input$,
-    (value$) =>
-      operations.ListAccountTransactionsRequest$outboundSchema.parse(value$),
+  const parsed = safeParse(
+    request,
+    (value) =>
+      operations.ListAccountTransactionsRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
-  if (!parsed$.ok) {
-    return parsed$;
+  if (!parsed.ok) {
+    return parsed;
   }
-  const payload$ = parsed$.value;
-  const body$ = null;
+  const payload = parsed.value;
+  const body = null;
 
-  const pathParams$ = {
-    companyId: encodeSimple$("companyId", payload$.companyId, {
+  const pathParams = {
+    companyId: encodeSimple("companyId", payload.companyId, {
       explode: false,
       charEncoding: "percent",
     }),
-    connectionId: encodeSimple$("connectionId", payload$.connectionId, {
+    connectionId: encodeSimple("connectionId", payload.connectionId, {
       explode: false,
       charEncoding: "percent",
     }),
   };
 
-  const path$ = pathToFunc(
+  const path = pathToFunc(
     "/companies/{companyId}/connections/{connectionId}/data/accountTransactions",
-  )(pathParams$);
+  )(pathParams);
 
-  const query$ = encodeFormQuery$({
-    "orderBy": payload$.orderBy,
-    "page": payload$.page,
-    "pageSize": payload$.pageSize,
-    "query": payload$.query,
+  const query = encodeFormQuery({
+    "orderBy": payload.orderBy,
+    "page": payload.page,
+    "pageSize": payload.pageSize,
+    "query": payload.query,
   });
 
-  const headers$ = new Headers({
+  const headers = new Headers({
     Accept: "application/json",
   });
 
-  const authHeader$ = await extractSecurity(client$.options$.authHeader);
-  const security$ = authHeader$ == null ? {} : { authHeader: authHeader$ };
+  const secConfig = await extractSecurity(client._options.authHeader);
+  const securityInput = secConfig == null ? {} : { authHeader: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
+
   const context = {
     operationID: "list-account-transactions",
     oAuth2Scopes: [],
-    securitySource: client$.options$.authHeader,
-  };
-  const securitySettings$ = resolveGlobalSecurity(security$);
 
-  const requestRes = client$.createRequest$(context, {
-    security: securitySettings$,
-    method: "GET",
-    path: path$,
-    headers: headers$,
-    query: query$,
-    body: body$,
-    timeoutMs: options?.timeoutMs || client$.options$.timeoutMs || -1,
-  }, options);
-  if (!requestRes.ok) {
-    return requestRes;
-  }
-  const request$ = requestRes.value;
+    resolvedSecurity: requestSecurity,
 
-  const doResult = await client$.do$(request$, {
-    context,
-    errorCodes: [],
+    securitySource: client._options.authHeader,
     retryConfig: options?.retries
-      || client$.options$.retryConfig
+      || client._options.retryConfig
       || {
         strategy: "backoff",
         backoff: {
@@ -127,15 +107,37 @@ export async function accountTransactionsList(
           maxElapsedTime: 3600000,
         },
         retryConnectionErrors: true,
-      },
+      }
+      || { strategy: "none" },
     retryCodes: options?.retryCodes || ["408", "429", "5XX"],
+  };
+
+  const requestRes = client._createRequest(context, {
+    security: requestSecurity,
+    method: "GET",
+    path: path,
+    headers: headers,
+    query: query,
+    body: body,
+    timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
+  }, options);
+  if (!requestRes.ok) {
+    return requestRes;
+  }
+  const req = requestRes.value;
+
+  const doResult = await client._do(req, {
+    context,
+    errorCodes: [],
+    retryConfig: context.retryConfig,
+    retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
     return doResult;
   }
   const response = doResult.value;
 
-  const responseFields$ = {
+  const responseFields = {
     ContentType: response.headers.get("content-type")
       ?? "application/octet-stream",
     StatusCode: response.status,
@@ -143,7 +145,7 @@ export async function accountTransactionsList(
     Headers: {},
   };
 
-  const [result$] = await m$.match<
+  const [result] = await M.match<
     operations.ListAccountTransactionsResponse,
     | SDKError
     | SDKValidationError
@@ -153,18 +155,18 @@ export async function accountTransactionsList(
     | RequestTimeoutError
     | ConnectionError
   >(
-    m$.json(200, operations.ListAccountTransactionsResponse$inboundSchema, {
+    M.json(200, operations.ListAccountTransactionsResponse$inboundSchema, {
       key: "AccountTransactions",
     }),
-    m$.json(
+    M.json(
       [400, 401, 402, 403, 404, 409, 429, 500, 503],
       operations.ListAccountTransactionsResponse$inboundSchema,
       { key: "ErrorMessage" },
     ),
-  )(response, { extraFields: responseFields$ });
-  if (!result$.ok) {
-    return result$;
+  )(response, { extraFields: responseFields });
+  if (!result.ok) {
+    return result;
   }
 
-  return result$;
+  return result;
 }

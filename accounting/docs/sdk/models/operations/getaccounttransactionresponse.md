@@ -21,7 +21,7 @@ let value: GetAccountTransactionResponse = {
     sourceModifiedDate: "2022-10-23T00:00:00Z",
   },
   contentType: "<value>",
-  statusCode: 602763,
+  statusCode: 305,
   rawResponse: new Response("{\"message\": \"hello world\"}", {
     headers: { "Content-Type": "application/json" },
   }),

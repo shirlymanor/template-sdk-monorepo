@@ -6,9 +6,9 @@
 import { PushOption, PushOptionType } from "@speakeasy-sdks/accounting/sdk/models/shared";
 
 let value: PushOption = {
-  displayName: "Harvey.Konopelski",
+  displayName: "Luis.Moen",
   required: false,
-  type: PushOptionType.Boolean,
+  type: PushOptionType.String,
 };
 ```
 

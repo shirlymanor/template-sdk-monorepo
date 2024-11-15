@@ -7,7 +7,7 @@ import { GetCreateChartOfAccountsModelResponse } from "@speakeasy-sdks/accountin
 
 let value: GetCreateChartOfAccountsModelResponse = {
   contentType: "<value>",
-  statusCode: 537373,
+  statusCode: 302,
   rawResponse: new Response("{\"message\": \"hello world\"}", {
     headers: { "Content-Type": "application/json" },
   }),

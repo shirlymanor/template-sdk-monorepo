@@ -20,7 +20,7 @@ let value: ListAccountTransactionsResponse = {
     pageSize: 10,
     results: [
       {
-        currency: "EUR",
+        currency: "USD",
         date: "2022-10-23T00:00:00Z",
         lines: [
           {
@@ -36,7 +36,7 @@ let value: ListAccountTransactionsResponse = {
     totalResults: 1,
   },
   contentType: "<value>",
-  statusCode: 623564,
+  statusCode: 415,
   rawResponse: new Response("{\"message\": \"hello world\"}", {
     headers: { "Content-Type": "application/json" },
   }),

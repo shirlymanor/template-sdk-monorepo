@@ -14,7 +14,7 @@ let value: CreateAccountRequest = {
     description:
       "Invoices the business has issued but has not yet collected payment on.",
     fullyQualifiedCategory: "Asset.Current",
-    fullyQualifiedName: "Cash On Hand",
+    fullyQualifiedName: "Fixed Asset",
     name: "Accounts Receivable",
     nominalCode: "610",
     status: AccountStatus.Active,
@@ -29,7 +29,7 @@ let value: CreateAccountRequest = {
 
 | Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `accountPrototype`                                                        | [shared.AccountPrototype](../../../sdk/models/shared/accountprototype.md) | :heavy_minus_sign:                                                        | N/A                                                                       |                                                                           |
+| `accountPrototype`                                                        | [shared.AccountPrototype](../../../sdk/models/shared/accountprototype.md) | :heavy_check_mark:                                                        | N/A                                                                       |                                                                           |
 | `companyId`                                                               | *string*                                                                  | :heavy_check_mark:                                                        | Unique identifier for a company.                                          | 8a210b68-6988-11ed-a1eb-0242ac120002                                      |
 | `connectionId`                                                            | *string*                                                                  | :heavy_check_mark:                                                        | Unique identifier for a connection.                                       | 2e9d2c44-f675-40ba-8049-353bfcb5e171                                      |
 | `timeoutInMinutes`                                                        | *number*                                                                  | :heavy_minus_sign:                                                        | Time limit for the push operation to complete before it is timed out.     |                                                                           |

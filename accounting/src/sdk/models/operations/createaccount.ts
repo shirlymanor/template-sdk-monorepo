@@ -4,10 +4,13 @@
 
 import * as z from "zod";
 import { remap as remap$ } from "../../../lib/primitives.js";
+import { safeParse } from "../../../lib/schemas.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as shared from "../shared/index.js";
 
 export type CreateAccountRequest = {
-  accountPrototype?: shared.AccountPrototype | undefined;
+  accountPrototype: shared.AccountPrototype;
   /**
    * Unique identifier for a company.
    */
@@ -51,7 +54,7 @@ export const CreateAccountRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  accountPrototype: shared.AccountPrototype$inboundSchema.optional(),
+  accountPrototype: shared.AccountPrototype$inboundSchema,
   companyId: z.string(),
   connectionId: z.string(),
   timeoutInMinutes: z.number().int().optional(),
@@ -59,7 +62,7 @@ export const CreateAccountRequest$inboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateAccountRequest$Outbound = {
-  accountPrototype?: shared.AccountPrototype$Outbound | undefined;
+  accountPrototype: shared.AccountPrototype$Outbound;
   companyId: string;
   connectionId: string;
   timeoutInMinutes?: number | undefined;
@@ -71,7 +74,7 @@ export const CreateAccountRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   CreateAccountRequest
 > = z.object({
-  accountPrototype: shared.AccountPrototype$outboundSchema.optional(),
+  accountPrototype: shared.AccountPrototype$outboundSchema,
   companyId: z.string(),
   connectionId: z.string(),
   timeoutInMinutes: z.number().int().optional(),
@@ -88,6 +91,24 @@ export namespace CreateAccountRequest$ {
   export const outboundSchema = CreateAccountRequest$outboundSchema;
   /** @deprecated use `CreateAccountRequest$Outbound` instead. */
   export type Outbound = CreateAccountRequest$Outbound;
+}
+
+export function createAccountRequestToJSON(
+  createAccountRequest: CreateAccountRequest,
+): string {
+  return JSON.stringify(
+    CreateAccountRequest$outboundSchema.parse(createAccountRequest),
+  );
+}
+
+export function createAccountRequestFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateAccountRequest, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateAccountRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateAccountRequest' from JSON`,
+  );
 }
 
 /** @internal */
@@ -154,4 +175,22 @@ export namespace CreateAccountResponse$ {
   export const outboundSchema = CreateAccountResponse$outboundSchema;
   /** @deprecated use `CreateAccountResponse$Outbound` instead. */
   export type Outbound = CreateAccountResponse$Outbound;
+}
+
+export function createAccountResponseToJSON(
+  createAccountResponse: CreateAccountResponse,
+): string {
+  return JSON.stringify(
+    CreateAccountResponse$outboundSchema.parse(createAccountResponse),
+  );
+}
+
+export function createAccountResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateAccountResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateAccountResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateAccountResponse' from JSON`,
+  );
 }

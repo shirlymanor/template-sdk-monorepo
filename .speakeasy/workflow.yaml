@@ -16,7 +16,15 @@ targets:
         target: typescript
         source: accounting
         output: ./accounting
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/sagar-demo/sagar-demo/accounting-code-samples
+            blocking: false
     lending-ts:
         target: typescript
         source: lending
         output: ./lending
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/sagar-demo/sagar-demo/lending-code-samples
+            blocking: false

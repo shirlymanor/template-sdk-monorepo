@@ -9,9 +9,10 @@ generation:
     requestResponseComponentNamesFeb2024: false
   auth:
     oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
   telemetryEnabled: true
 typescript:
-  version: 0.7.0
+  version: 0.8.1
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -19,9 +20,11 @@ typescript:
   additionalPackageJSON: {}
   author: Accounting
   clientServerStatusCodesAsErrors: false
+  defaultErrorName: SDKError
   description: Access the Accounting API
   enumFormat: enum
   flattenGlobalSecurity: true
+  flatteningOrder: body-first
   imports:
     option: openapi
     paths:

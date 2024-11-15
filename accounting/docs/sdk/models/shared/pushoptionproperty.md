@@ -6,8 +6,8 @@
 import { PushOptionProperty, PushOptionType } from "@speakeasy-sdks/accounting/sdk/models/shared";
 
 let value: PushOptionProperty = {
-  description: "Fundamental background neural-net",
-  displayName: "Madison77",
+  description: "purse salty even as advanced afterwards",
+  displayName: "Peggie_Hegmann70",
   required: false,
   type: PushOptionType.Object,
 };

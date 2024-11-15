@@ -12,7 +12,7 @@ let value: AccountPrototype = {
   description:
     "Invoices the business has issued but has not yet collected payment on.",
   fullyQualifiedCategory: "Asset.Current",
-  fullyQualifiedName: "Cash On Hand",
+  fullyQualifiedName: "Fixed Asset",
   name: "Accounts Receivable",
   nominalCode: "610",
   status: AccountStatus.Active,

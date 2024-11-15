@@ -7,7 +7,7 @@ Type of change being applied to record in third party platform.
 ```typescript
 import { PushChangeType } from "@speakeasy-sdks/accounting/sdk/models/shared";
 
-let value: PushChangeType = PushChangeType.Created;
+let value: PushChangeType = PushChangeType.AttachmentUploaded;
 ```
 
 ## Values
